@@ -18,6 +18,8 @@ import {User} from "../../../model/user";
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  errorMessage: string = '';
+
 
   constructor(
     private userService: UserService,
@@ -61,10 +63,10 @@ export class RegisterComponent {
           this.router.navigate(['/login']);
         },
         error: () => {
-          alert('Registration failed. Please try again.');
+          this.errorMessage = 'Registration failed. Please try again.';
         }
       });
     } else {
-      alert('Please fill out all required fields correctly.');
+      this.errorMessage = 'Please fill out all required fields correctly.';
     }
   }}
