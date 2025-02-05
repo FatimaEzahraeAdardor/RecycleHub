@@ -1,0 +1,79 @@
+<section class="bg-cover bg-center min-h-screen flex items-center justify-center"
+         [ngStyle]="{'background-image': 'url(/assets/images/background.jpg)', 'background-color': 'rgba(0, 0, 0, 0.5)', 'background-blend-mode': 'overlay'}">
+  <div class="bg-white/70 p-8 rounded-lg shadow-lg w-full max-w-4xl backdrop-blur-sm">
+    <h2 class="text-2xl font-bold mb-6 text-green-600">EcoCollect</h2>
+    <h3 class="text-xl font-semibold mb-4 text-center">Registration</h3>
+
+    <form>
+      <!-- Email and Password -->
+      <div class="mb-4 flex space-x-4">
+        <div class="w-1/2">
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="email" formControlName="email"
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </div>
+
+        <div class="w-1/2">
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="password" formControlName="password"
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </div>
+      </div>
+
+      <!-- First Name and Last Name -->
+      <div class="mb-4 flex space-x-4">
+        <div class="w-1/2">
+          <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+          <input type="text" id="firstName" formControlName="firstName"
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </div>
+
+        <div class="w-1/2">
+          <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName"
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </div>
+      </div>
+
+      <!-- Address and Phone Number -->
+      <div class="mb-4 flex space-x-4">
+        <div class="w-1/2">
+          <label for="address" class="block text-sm font-medium text-gray-700">Full Address</label>
+          <input type="text" id="address" formControlName="address"
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </div>
+
+        <div class="w-1/2">
+          <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+          <input type="tel" id="phone" formControlName="phone"
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </div>
+      </div>
+
+      <!-- Date of Birth and Profile Picture -->
+      <div class="mb-6 flex space-x-4">
+        <div class="w-1/2">
+          <label for="birthDate" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+          <input type="date" id="birthDate" formControlName="birthDate"
+                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+        </div>
+
+        <div class="w-1/2">
+          <label for="profilePicture" class="block text-sm font-medium text-gray-700">Profile Picture</label>
+          <input type="file" id="profilePicture" formControlName="profilePicture"
+                 class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+        </div>
+      </div>
+
+      <!-- Register Button -->
+      <button type="submit"
+              class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+        Register
+      </button>
+    </form>
+
+    <p class="mt-4 text-center text-sm text-gray-600">
+      Already have an account? <a routerLink="/login" class="text-green-600 hover:text-green-500">Login</a>
+    </p>
+  </div>
+</section>
