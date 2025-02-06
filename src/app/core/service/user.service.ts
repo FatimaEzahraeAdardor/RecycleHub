@@ -20,26 +20,23 @@ export class UserService {
   addUser(userData: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, userData);
   }
-
   login(email: string, password: string): Observable<User | null> {
-    return this.http.get<User[]>(`${this.apiUrl}?email=${email}`).pipe(
+    return this.http.get<User[]>(this.apiUrl).pipe(
       map(users => {
-        const user = users[0];
-        if (user && user.password === password) {
+        const user = users.find(user => user.email === email && user.password === password);
+        if (user) {
           localStorage.setItem('currentUser', JSON.stringify(user));
           return user;
         }
         return null;
-      }),
-      catchError(err => {
-        console.error('Login error:', err);
-        throw err;
-      })
-    );
+      }));
   }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('currentUser');
 
+  }
+  logout(): void {
+    localStorage.removeItem('currentUser');
   }
 }
