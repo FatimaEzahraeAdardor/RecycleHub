@@ -43,5 +43,10 @@ export class UserService {
     const user = localStorage.getItem('currentUser');
     return user ? JSON.parse(user).role : null;
   }
-
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${user.id}`, user);
+  }
+  getUserById(userId:string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${userId}`);
+  }
 }
