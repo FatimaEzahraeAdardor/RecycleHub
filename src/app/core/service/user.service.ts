@@ -39,4 +39,9 @@ export class UserService {
   logout(): void {
     localStorage.removeItem('currentUser');
   }
+  getRole(): string | null {
+    const user = localStorage.getItem('currentUser');
+    return user ? JSON.parse(user).role : null;
+  }
+
 }
