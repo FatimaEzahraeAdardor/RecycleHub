@@ -5,6 +5,7 @@ import { UserService } from "../../../core/service/user.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import { Observable } from "rxjs";
 import { NgIf } from "@angular/common";
+import {routes} from "../../../app.routes";
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
   editForm: FormGroup;
   errorMessage: string = '';
   isModalOpen = false;
+  isDeleteModalOpen = false;
 
   constructor(
     private userService: UserService,
@@ -62,9 +64,15 @@ export class ProfileComponent implements OnInit {
   openModal(): void {
     this.isModalOpen = true;
   }
+  openDeleteModal(): void {
+    this.isDeleteModalOpen = true;
+  }
 
   closeModal(): void {
     this.isModalOpen = false;
+  }
+  closeDeleteModal(): void {
+    this.isDeleteModalOpen = false;
   }
   onFileChange(event: any) {
     const file = event.target.files[0];
@@ -96,6 +104,18 @@ export class ProfileComponent implements OnInit {
         console.error('Error updating user:', error);
       }
     });
+  }
+  deleteUser(): void {
+    this.userService.deleteUser(this.userId).subscribe({
+      next: (response) => {
+        console.log('User deleted successfully:', response);
+        this.closeModal();
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Error deleting user:', error);
+      }
+    })
   }
 
 }

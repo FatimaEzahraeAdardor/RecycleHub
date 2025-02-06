@@ -49,4 +49,9 @@ export class UserService {
   getUserById(userId:string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${userId}`);
   }
+
+  deleteUser(userId: string | null): Observable<User> {
+    localStorage.removeItem('currentUser');
+    return this.http.delete<User>(`${this.apiUrl}/${userId}`);
+  }
 }
