@@ -54,4 +54,5 @@ export class UserService {
     localStorage.removeItem('currentUser');
     return this.http.delete<User>(`${this.apiUrl}/${userId}`);
   }
+
 }

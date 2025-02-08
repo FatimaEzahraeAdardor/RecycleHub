@@ -26,4 +26,10 @@ export class CollectionService {
   deleteCollection(collectionId: string | null): Observable<Collection> {
     return this.http.delete<Collection>(`${this.apiUrl}/${collectionId}`);
   }
+  updateCollection(collectionId:string ,collection: Collection): Observable<Collection> {
+    return this.http.put<Collection>(`${this.apiUrl}/${collectionId}`, collection);
+  }
+  getCollectionById(id: string): Observable<Collection> {
+    return this.http.get<Collection>(`${this.apiUrl}/${id}`);
+  }
 }
