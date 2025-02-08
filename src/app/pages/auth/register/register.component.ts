@@ -49,7 +49,6 @@ export class RegisterComponent {
       reader.readAsDataURL(file);
     }
   }
-
   onSubmit() {
     if (this.registerForm.valid) {
       const newUser: User = {

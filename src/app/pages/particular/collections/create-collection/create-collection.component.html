@@ -1,0 +1,56 @@
+<div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+    <div class="px-4 py-5 sm:px-6 w-full">
+      <div class="p-8 bg-white shadow-lg rounded-lg max-w-4xl">
+        <h2 class="text-xl font-bold mb-4">Demande de Collecte</h2>
+
+        <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()">
+          <!-- Multiple Selection: Checkboxes -->
+          <label class="block mt-4 font-bold">Sélection multiple :</label>
+          <div class="flex space-x-4">
+            <div *ngFor="let type of wasteTypes" class="inline-flex items-center">
+              <input type="checkbox" [value]="type" (change)="onMultipleWasteTypeChange($event)">
+              <label class="ml-2">{{ type }}</label>
+            </div>
+          </div>
+          <small class="text-gray-500">Vous pouvez cocher plusieurs types de déchets.</small>
+          <!-- Poids estimé -->
+          <label class="block mt-4">Poids estimé (g) :</label>
+          <input type="number" formControlName="estimatedWeight" class="w-full p-2 border rounded" min="1000">
+          <small *ngIf="collectionForm.get('estimatedWeight')?.invalid && collectionForm.get('estimatedWeight')?.touched" class="text-red-500">Min: 1000g</small>
+
+          <!-- Adresse -->
+          <label class="block mt-4">Adresse de collecte :</label>
+          <input type="text" formControlName="collectionAddress" class="w-full p-2 border rounded">
+          <small *ngIf="collectionForm.get('collectionAddress')?.invalid && collectionForm.get('collectionAddress')?.touched" class="text-red-500"> Address is required.</small>
+          <!-- Date et Créneau Horaire -->
+          <label class="block mt-4">Date de collecte :</label>
+          <input type="date" formControlName="collectionDate" class="w-full p-2 border rounded">
+          <small *ngIf="collectionForm.get('collectionDate')?.invalid && collectionForm.get('collectionDate')?.touched" class="text-red-500"> Date is required.</small>
+
+          <label class="block mt-4">Créneau horaire :</label>
+          <select formControlName="collectionTime" class="w-full p-2 border rounded">
+            <option value="">Sélectionner...</option>
+            <option value="09:00-12:00">09h00 - 12h00</option>
+            <option value="12:00-15:00">12h00 - 15h00</option>
+            <option value="15:00-18:00">15h00 - 18h00</option>
+          </select>
+
+          <!-- Notes -->
+          <label class="block mt-4">Notes supplémentaires (optionnel) :</label>
+          <textarea formControlName="notes" class="w-full p-2 border rounded"></textarea>
+
+          <!-- Images -->
+          <label class="block mt-4">Photos des déchets (optionnel) :</label>
+          <input type="file" (change)="onFileChange($event)" class="w-full py-2 rounded text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 ">
+
+
+          <!-- Bouton -->
+          <button [disabled]="collectionForm.invalid" type="submit" class="mt-4 bg-green-600 text-white py-2 px-4 rounded">
+            Soumettre la demande
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
