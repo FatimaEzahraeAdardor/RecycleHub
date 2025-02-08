@@ -55,7 +55,7 @@
                       class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
                 Update
               </button>
-              <button
+              <button (click)="deleteCollection(collection.id , collection.status)"
                       class="text-white bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5">
                 Delete
               </button>

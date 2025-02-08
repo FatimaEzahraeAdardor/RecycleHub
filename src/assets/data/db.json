@@ -15,21 +15,6 @@
   ],
   "collections": [
     {
-      "id": "2f9a",
-      "particularId": "c9e81639-4c82-4a50-a5a8-fd6d17b8ebc3",
-      "wasteType": [
-        "verre",
-        "métal"
-      ],
-      "photo": "",
-      "estimatedWeight": 6340,
-      "collectionAddress": "Suscipit optio eius",
-      "collectionDate": "2025-02-07",
-      "collectionTime": "12:00-15:00",
-      "notes": "Vero asperiores sapi",
-      "status": "pending"
-    },
-    {
       "id": "1d15",
       "particularId": "c9e81639-4c82-4a50-a5a8-fd6d17b8ebc3",
       "wasteType": [
@@ -42,22 +27,7 @@
       "collectionDate": "2025-02-07",
       "collectionTime": "12:00-15:00",
       "notes": "Vero asperiores sapi",
-      "status": "pending"
-    },
-    {
-      "id": "5945",
-      "particularId": "c9e81639-4c82-4a50-a5a8-fd6d17b8ebc3",
-      "wasteType": [
-        "verre",
-        "papier"
-      ],
-      "photo": "",
-      "estimatedWeight": 4630,
-      "collectionAddress": "Dolore consequatur e",
-      "collectionDate": "2025-02-07",
-      "collectionTime": "12:00-15:00",
-      "notes": "Ipsum tempor corrupt",
-      "status": "pending"
+      "status": "in-progress"
     },
     {
       "id": "2c83",
