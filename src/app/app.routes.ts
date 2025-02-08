@@ -7,6 +7,8 @@ import { DashboardComponent } from "./pages/particular/dashboard/dashboard.compo
 import { authGuard } from "./core/guards/auth.guard";
 import { particularGuard } from "./core/guards/particular.guard";
 import {ProfileComponent} from "./pages/particular/profile/profile.component";
+import {CollectionComponent} from "./pages/particular/collections/collection/collection.component";
+import {CreateCollectionComponent} from "./pages/particular/collections/create-collection/create-collection.component";
 
 export const routes: Routes = [
   {
@@ -22,6 +24,9 @@ export const routes: Routes = [
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [particularGuard],children: [
       { path: 'profile/:id', component: ProfileComponent},
+      { path: 'collections', component: CollectionComponent},
+      { path: 'collections/create', component: CreateCollectionComponent },
+
     ]
   }
 ];

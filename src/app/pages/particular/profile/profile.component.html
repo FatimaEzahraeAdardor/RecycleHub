@@ -70,12 +70,16 @@
         </dl>
       </div>
 
-
+      <div class="flex gap-5">
       <!-- edit Modal toggle -->
-      <button (click)="openModal()" class="block text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-gree-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-        Update Your Account
-      </button>
-
+        <button (click)="openModal()" class="block text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-gree-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          Update Your Account
+        </button>
+        <!-- delete Modal toggle -->
+        <button (click)="openDeleteModal()" class="block text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-gree-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          delete Your Account
+        </button>
+      </div>
       <!-- Main modal -->
       <div *ngIf="isModalOpen" class="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
         <div class="relative p-4 w-full max-w-md max-h-full">
@@ -134,10 +138,7 @@
           </div>
         </div>
       </div>
-      <!-- delete Modal toggle -->
-      <button (click)="openDeleteModal()" class="block text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-gree-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-        delete Your Account
-      </button>
+
       <!-- delete Main modal -->
       <div *ngIf="isDeleteModalOpen" class="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
         <div class="relative p-4 w-full max-w-md max-h-full">
