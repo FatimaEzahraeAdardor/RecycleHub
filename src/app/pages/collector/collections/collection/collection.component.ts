@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, RouterLink} from "@angular/router";
+import {Router} from "@angular/router";
 import { CollectionService } from "../../../../core/service/collection.service";
 import { Collection } from "../../../../model/collection";
 import { CommonModule } from '@angular/common';
+import {UserService} from "../../../../core/service/user.service";
 
 @Component({
   selector: 'app-collection',
   standalone: true,
   imports: [
-    RouterLink,
     CommonModule
   ],
   templateUrl: './collection.component.html',
@@ -19,7 +19,7 @@ export class CollectionComponent implements OnInit {
   collectorAddress: string | null = null;
   collectorId: string;
 
-  constructor(private collectionService: CollectionService,private router: Router,) {
+  constructor(private collectionService: CollectionService,private router: Router, private userService: UserService) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.collectorAddress = currentUser?.address || null;
     this.collectorId = currentUser?.id || null;
@@ -54,11 +54,33 @@ export class CollectionComponent implements OnInit {
     });
   }
   validateCollection(collectionId: string) {
-    this.collectionService.updateCollectionStatus(collectionId, 'validated',this.collectorId).subscribe({
+    this.collectionService.updateCollectionStatus(collectionId, 'validated', this.collectorId).subscribe({
       next: () => {
-        console.log('Collection request accepted and status set to validation.');
-        alert('You have validated the request. The status is now "validated".');
-        this.router.navigate(['/dashboardCollector/collections'])
+        console.log('Collection request validated.');
+
+        this.collectionService.getCollectionById(collectionId).subscribe({
+          next: (collection) => {
+            if (collection && collection.wasteItems) {
+              const pointsToAdd = this.userService.calculatePoints(collection.wasteItems);
+
+              this.userService.updateUserPoints(collection.particularId, pointsToAdd).subscribe({
+                next: () => {
+                  console.log(`Points successfully added to the user: ${pointsToAdd}`);
+                  alert(`Points have been successfully added: ${pointsToAdd}`);
+                },
+                error: (err) => {
+                  console.error('Error adding points:', err);
+                  alert('Failed to add points to the user.');
+                }
+              });
+            }
+          },
+          error: (err) => {
+            console.error('Error fetching collection:', err);
+            alert('Failed to retrieve collection details.');
+          }
+        });
+
       },
       error: (err) => {
         console.error('Error updating collection status:', err);
@@ -66,6 +88,7 @@ export class CollectionComponent implements OnInit {
       }
     });
   }
+
   rejectCollection(collectionId: string) {
     this.collectionService.updateCollectionStatus(collectionId, 'rejected',this.collectorId).subscribe({
       next: () => {
