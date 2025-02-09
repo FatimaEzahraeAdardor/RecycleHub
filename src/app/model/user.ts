@@ -10,6 +10,8 @@ export interface User {
   role: 'particulier' | 'collecteur';
   profilePicture?: string;
   collectorId?: string;
+  points?:number;
+
 
 
 

@@ -1,12 +1,15 @@
 export interface Collection {
   id: string;
   particularId: string;
-  wasteType: string[];
+  wasteItems: WasteDetail[];
   photo?: string;
   collectionAddress: string;
-  estimatedWeight: number;
   collectionDate: string;
   collectionTime: string;
   notes?: string;
   status: 'pending' | 'occupied' | 'in-progress' | 'validated' | 'rejected';
+}
+export interface WasteDetail {
+  type: string;
+  weight: number;
 }

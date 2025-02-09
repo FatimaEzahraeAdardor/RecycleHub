@@ -23,8 +23,7 @@
             <div class="px-6 pb-6">
               <p class="text-sm text-gray-600 leading-relaxed">
                 <strong>Type de déchet :</strong> {{ collection.particularId }}<br>
-                <strong>Type de déchet :</strong> {{ collection.wasteType.join(', ') }}<br>
-                <strong>Poids estimé :</strong> {{ collection.estimatedWeight }} g<br>
+                <strong>Type de déchet :</strong> {{ collection.wasteItems.join(', ') }}<br>
                 <strong>Adresse :</strong> {{ collection.collectionAddress }}<br>
                 <strong>Date et créneau :</strong> {{ collection.collectionDate }} - {{ collection.collectionTime }}<br>
                 <strong>Notes supplémentaires :</strong> {{ collection.notes || 'Aucune' }}<br>

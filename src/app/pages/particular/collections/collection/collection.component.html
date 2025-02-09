@@ -1,43 +1,47 @@
 <div class="p-4 sm:ml-64">
-  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-    <div class="flex flex-col items-center justify-center h-auto rounded-sm bg-gray-50 dark:bg-gray-800 w-full">
-      <div class="px-4 py-5 sm:px-6 w-full">
-        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white text-center">
-          Collections
-        </h3>
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+        <div class="flex flex-col items-center justify-center h-auto rounded-sm bg-gray-50 dark:bg-gray-800 w-full">
+            <div class="px-4 py-5 sm:px-6 w-full">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white text-center">
+                    Collections
+                </h3>
 
-        <!-- Bouton pour créer une demande -->
-        <div class="flex justify-end">
-          <button routerLink="create"
-                  class="block text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Collection Request
-          </button>
-        </div>
+                <!-- Button to create a collection request -->
+                <div class="flex justify-end">
+                    <button routerLink="create"
+                            class="block text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Collection Request
+                    </button>
+                </div>
 
-        <!-- Liste des collectes -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          <div *ngFor="let collection of collections" class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <div class="flex items-center gap-2 px-6 pt-6">
-              <h3 class="text-xl text-gray-800 font-bold flex-1">Collection Request</h3>
-            </div>
+                <!-- Collection list -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    <div *ngFor="let collection of collections" class="bg-white shadow-lg rounded-lg overflow-hidden">
+                        <div class="flex items-center gap-2 px-6 pt-6">
+                            <h3 class="text-xl text-gray-800 font-bold flex-1">Collection Request</h3>
+                        </div>
 
-            <!-- Image -->
-            <div class="min-h-[200px] flex justify-center">
-              <img [src]="collection.photo ? collection.photo : 'assets/default-image.jpg'"
-                   alt="Illustration de collecte"
-                   class="w-full my-6 object-cover rounded-lg" />
-            </div>
+                        <!-- Image -->
+                        <div class="min-h-[200px] flex justify-center">
+                            <img [src]="collection.photo ? collection.photo : 'assets/default-image.jpg'"
+                                 alt="Collection Illustration"
+                                 class="w-full my-6 object-cover rounded-lg" />
+                        </div>
 
-            <!-- Détails de la collecte -->
-            <div class="px-6 pb-6">
-              <p class="text-sm text-gray-600 leading-relaxed">
-                  <strong>Type de déchet :</strong> {{ collection.wasteType.join(', ') }}<br>
-                <strong>Poids estimé :</strong> {{ collection.estimatedWeight }} g<br>
-                <strong>Adresse :</strong> {{ collection.collectionAddress }}<br>
-                <strong>Date et créneau :</strong> {{ collection.collectionDate }} - {{ collection.collectionTime }}<br>
-                <strong>Notes supplémentaires :</strong> {{ collection.notes || 'Aucune' }}<br>
-                <strong>Status :</strong>
-                <span [ngClass]="{
+                        <!-- Collection details -->
+                        <div class="px-6 pb-6">
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                <strong>Type de déchet :</strong>
+                                <span *ngFor="let waste of collection.wasteItems; let last = last">
+  {{ waste.type }} ({{ waste.weight }} g)<span *ngIf="!last">, </span>
+</span>
+
+                                <br>
+                                <strong>Adresse :</strong> {{ collection.collectionAddress }}<br>
+                                <strong>Date et créneau :</strong> {{ collection.collectionDate }} - {{ collection.collectionTime }}<br>
+                                <strong>Notes supplémentaires :</strong> {{ collection.notes || 'Aucune' }}<br>
+                                <strong>Status :</strong>
+                                <span [ngClass]="{
                   'text-gray-500': collection.status === 'pending',
                   'text-blue-600': collection.status === 'occupied',
                   'text-yellow-600': collection.status === 'in-progress',
@@ -46,25 +50,25 @@
                 }">
                   {{ collection.status | titlecase }}
                 </span>
-              </p>
-            </div>
+                            </p>
+                        </div>
 
-            <!-- Update and Delete Buttons -->
-            <div class="flex justify-end space-x-2 px-6 pb-6">
-              <div *ngIf="collection.status=='pending'">
-              <button routerLink="update/{{collection.id}}"
-                      class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
-                Update
-              </button>
-              </div>
-              <button (click)="deleteCollection(collection.id , collection.status)"
-                      class="text-white bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5">
-                Delete
-              </button>
+                        <!-- Update and Delete Buttons -->
+                        <div class="flex justify-end space-x-2 px-6 pb-6">
+                            <div *ngIf="collection.status === 'pending'">
+                                <button routerLink="update/{{collection.id}}"
+                                        class="text-white bg-blue-600 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                    Update
+                                </button>
+                            </div>
+                            <button (click)="deleteCollection(collection.id, collection.status)"
+                                    class="text-white bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                Delete
+                            </button>
+                        </div>
+                    </div> <!-- End of collection card -->
+                </div>
             </div>
-          </div> <!-- Fin de la carte de collecte -->
         </div>
-      </div>
     </div>
-  </div>
 </div>
