@@ -69,7 +69,8 @@
       "collectionDate": "1989-05-20",
       "collectionTime": "15:00-18:00",
       "notes": "Possimus sit sit na",
-      "status": "pending"
+      "status": "occupied",
+      "collectorId": "d9e81639-4c82-4a50-a5a8-fd6d87c8ebc3"
     }
   ]
 }

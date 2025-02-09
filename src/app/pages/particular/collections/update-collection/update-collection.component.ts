@@ -86,7 +86,7 @@ export class UpdateCollectionComponent implements OnInit {
       this.collectionService.updateCollection(this.collectionId, this.collectionForm.value).subscribe(
         data => {
           console.log("Collection request updated:", data);
-          this.router.navigate(['/collections']);
+          this.router.navigate(['/dashboard/collections']);
         },
         error => {
           console.error('Error updating request:', error);

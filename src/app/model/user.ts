@@ -9,6 +9,7 @@ export interface User {
   birthDate: string;
   role: 'particulier' | 'collecteur';
   profilePicture?: string;
+  collectorId?: string;
 
 
 

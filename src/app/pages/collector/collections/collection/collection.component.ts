@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import { CollectionService } from "../../../../core/service/collection.service";
 import { Collection } from "../../../../model/collection";
 import { CommonModule } from '@angular/common';
@@ -17,10 +17,12 @@ import { CommonModule } from '@angular/common';
 export class CollectionComponent implements OnInit {
   collections: Collection[] = [];
   collectorAddress: string | null = null;
+  collectorId: string;
 
-  constructor(private collectionService: CollectionService) {
+  constructor(private collectionService: CollectionService,private router: Router,) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.collectorAddress = currentUser?.address || null;
+    this.collectorId = currentUser?.id || null;
   }
 
   ngOnInit(): void {
@@ -38,21 +40,17 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  deleteCollection(collectionId: string, status: string): void {
-    if (status !== 'pending') {
-      alert('You can only delete collections with "pending" status.');
-      return;
-    }
-
-    const confirmDelete = window.confirm('Are you sure you want to delete this collection?');
-    if (confirmDelete) {
-      this.collectionService.deleteCollection(collectionId).subscribe({
-        next: () => {
-          this.collections = this.collections.filter(collection => collection.id !== collectionId);
-          console.log('Collection deleted successfully');
-        },
-        error: (error) => console.error('Error while deleting the collection:', error)
-      });
-    }
+  acceptCollectionRequest(collectionId: string) {
+    this.collectionService.updateCollectionStatus(collectionId, 'occupied', this.collectorId).subscribe({
+      next: () => {
+        console.log('Collection request accepted and status set to occupied.');
+        alert('You have accepted the request. The status is now "Occupied".');
+        this.router.navigate(['/dashboardCollector/collections'])
+      },
+      error: (err) => {
+        console.error('Error updating collection status:', err);
+        alert('Failed to accept the collection request.');
+      }
+    });
   }
 }

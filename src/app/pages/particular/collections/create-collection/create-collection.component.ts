@@ -72,7 +72,7 @@ export class CreateCollectionComponent {
       this.collectionService.collectionRequest(this.collectionForm.value).subscribe(
         data => {
           console.log("Collection request submitted:", data);
-          this.router.navigate(['/collections']);
+          this.router.navigate(['/dashboard/collections']);
         },
         error => {
           console.error('Error adding request:', error);

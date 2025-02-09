@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Collection } from "../../model/collection";
 import { Observable } from "rxjs";
-import {User} from "../../model/user";
-
 @Injectable({
   providedIn: 'root'
 })
@@ -31,5 +29,12 @@ export class CollectionService {
   }
   getCollectionById(id: string): Observable<Collection> {
     return this.http.get<Collection>(`${this.apiUrl}/${id}`);
+  }
+  updateCollectionStatus(
+      collectionId: string,
+      status: 'pending' | 'occupied' | 'in-progress' | 'validated' | 'rejected',
+      collectorId: string
+  ): Observable<Collection> {
+    return this.http.patch<Collection>(`${this.apiUrl}/${collectionId}`, { status, collectorId });
   }
 }
