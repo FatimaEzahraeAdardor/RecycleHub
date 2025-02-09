@@ -17,7 +17,7 @@ export class CollectionService {
   }
 
   getAllCollections(): Observable<Collection[]> {
-    return this.http.get<Collection[]>(this.apiUrl);
+    return this.http.get<Collection[]>(`${this.apiUrl}`);
   }
 
   getCollectionsByParticular(particularId: string): Observable<Collection[]> {

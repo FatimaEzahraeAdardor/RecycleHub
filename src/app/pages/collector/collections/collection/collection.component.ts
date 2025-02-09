@@ -16,24 +16,24 @@ import { CommonModule } from '@angular/common';
 })
 export class CollectionComponent implements OnInit {
   collections: Collection[] = [];
-  particularId: string | null = null;
+  collectorAddress: string | null = null;
 
   constructor(private collectionService: CollectionService) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    this.particularId = currentUser?.id || null;
+    this.collectorAddress = currentUser?.address || null;
   }
 
   ngOnInit(): void {
-    if (this.particularId) {
-      this.getCollections();
-    } else {
-      console.warn('No particular ID found.');
-    }
+    this.getCollections();
   }
 
-  getCollections() {
-    this.collectionService.getCollectionsByParticular(this.particularId!).subscribe({
-      next: (data) => this.collections = data,
+  getCollections(): void {
+    this.collectionService.getAllCollections().subscribe({
+      next: (data) => {
+        this.collections = data.filter(collection =>
+          this.collectorAddress && collection.collectionAddress.includes(this.collectorAddress)
+        );
+      },
       error: (err) => console.error('Error while fetching collections:', err)
     });
   }
@@ -47,13 +47,11 @@ export class CollectionComponent implements OnInit {
     const confirmDelete = window.confirm('Are you sure you want to delete this collection?');
     if (confirmDelete) {
       this.collectionService.deleteCollection(collectionId).subscribe({
-        next: (response) => {
+        next: () => {
           this.collections = this.collections.filter(collection => collection.id !== collectionId);
-          console.log('Collection deleted successfully:', response);
+          console.log('Collection deleted successfully');
         },
-        error: (error) => {
-          console.error('Error while deleting the collection:', error);
-        }
+        error: (error) => console.error('Error while deleting the collection:', error)
       });
     }
   }
