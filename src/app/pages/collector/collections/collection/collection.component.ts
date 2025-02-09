@@ -53,4 +53,30 @@ export class CollectionComponent implements OnInit {
       }
     });
   }
+  validateCollection(collectionId: string) {
+    this.collectionService.updateCollectionStatus(collectionId, 'validated',this.collectorId).subscribe({
+      next: () => {
+        console.log('Collection request accepted and status set to validation.');
+        alert('You have validated the request. The status is now "validated".');
+        this.router.navigate(['/dashboardCollector/collections'])
+      },
+      error: (err) => {
+        console.error('Error updating collection status:', err);
+        alert('Failed to validate the collection request.');
+      }
+    });
+  }
+  rejectCollection(collectionId: string) {
+    this.collectionService.updateCollectionStatus(collectionId, 'rejected',this.collectorId).subscribe({
+      next: () => {
+        console.log('Collection request rejected and status set to rejected.');
+        alert('You have rejected the request.');
+        this.router.navigate(['/dashboardCollector/collections'])
+      },
+      error: (err) => {
+        console.error('Error updating collection status:', err);
+        alert('Failed to rejected the collection request.');
+      }
+    });
+  }
 }
