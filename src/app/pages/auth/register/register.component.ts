@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NgStyle} from "@angular/common";
+import {NgIf, NgStyle} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserService} from "../../../core/service/user.service";
@@ -11,7 +11,8 @@ import {User} from "../../../model/user";
   imports: [
     NgStyle,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
@@ -35,7 +36,7 @@ export class RegisterComponent {
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       birthDate: ['', Validators.required],
       profilePicture: [null],
-      role: ['particulier'] // Default role set to 'particulier'
+      role: ['particulier']
     });
   }
 

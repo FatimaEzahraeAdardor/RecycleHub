@@ -41,9 +41,9 @@ export class LoginComponent {
           alert('Login successful!');
 
           if (user.role === 'particulier') {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/dashboard/collections']);
           } else if (user.role === 'collecteur') {
-            this.router.navigate(['/dashboardCollector']);
+            this.router.navigate(['/dashboardCollector/collections']);
           } else {
             this.errorMessage = 'Invalid email or password!';
           }

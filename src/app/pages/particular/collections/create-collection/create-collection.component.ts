@@ -1,15 +1,13 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router, RouterLink } from "@angular/router";
-import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
+import {FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule} from "@angular/forms";
 import { CollectionService } from "../../../../core/service/collection.service";
-import { ReactiveFormsModule } from "@angular/forms";
 import { NgForOf, NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-create-collection',
   standalone: true,
   imports: [
-    RouterLink,
     ReactiveFormsModule,
     NgForOf,
     NgIf
@@ -17,7 +15,7 @@ import { NgForOf, NgIf } from "@angular/common";
   templateUrl: './create-collection.component.html',
   styleUrls: ['./create-collection.component.css']
 })
-export class CreateCollectionComponent {
+export class CreateCollectionComponent implements OnInit {
   collectionForm: FormGroup;
   wasteTypes: { type: string, pointsPerKg: number }[] = [
     { type: "Plastique", pointsPerKg: 2 },
@@ -25,6 +23,7 @@ export class CreateCollectionComponent {
     { type: "Papier", pointsPerKg: 1 },
     { type: "Métal", pointsPerKg: 5 }
   ];
+
 
   constructor(
       private formBuilder: FormBuilder,
@@ -44,6 +43,17 @@ export class CreateCollectionComponent {
       status: ['pending'],
       photo:[]
     });
+  }
+
+  ngOnInit(): void {
+
+  }
+  getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   get wasteItemsArray() {
@@ -91,4 +101,5 @@ export class CreateCollectionComponent {
       console.log('Formulaire invalide, veuillez vérifier les champs.');
     }
   }
+
 }
