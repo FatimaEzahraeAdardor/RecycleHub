@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 export class CollectionComponent implements OnInit {
   collections: Collection[] = [];
   particularId: string | null = null;
+  disableCreateRequestButton: boolean = false;
 
   constructor(private collectionService: CollectionService) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -33,9 +34,26 @@ export class CollectionComponent implements OnInit {
 
   getCollections() {
     this.collectionService.getCollectionsByParticular(this.particularId!).subscribe({
-      next: (data) => this.collections = data,
+      next: (data) => {
+        this.collections = data;
+        this.checkPendingRequests();
+      },
       error: (err) => console.error('Error while fetching collections:', err)
     });
+  }
+
+  checkPendingRequests() {
+    // Filter collections that are neither validated nor rejected
+    const notValidatedOrRejectedCount = this.collections.filter(collection =>
+      collection.status !== 'validated' && collection.status !== 'rejected'
+    ).length;
+
+    // Disable the button if there are already 3 or more such requests
+    if (notValidatedOrRejectedCount >= 3) {
+      this.disableCreateRequestButton = true;
+    } else {
+      this.disableCreateRequestButton = false;
+    }
   }
 
   deleteCollection(collectionId: string, status: string): void {

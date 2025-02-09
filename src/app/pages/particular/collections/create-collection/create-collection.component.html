@@ -1,65 +1,65 @@
 <div class="p-4 sm:ml-64">
-    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-        <div class="px-4 py-5 sm:px-6 w-full">
-            <div class="p-8 bg-white shadow-lg rounded-lg max-w-4xl">
-                <h2 class="text-xl font-bold mb-4">Demande de Collecte</h2>
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+    <div class="px-4 py-5 sm:px-6 w-full">
+      <div class="p-8 bg-white shadow-lg rounded-lg max-w-4xl">
+        <h2 class="text-xl font-bold mb-4">Collection Request</h2>
 
-                <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()">
-                    <!-- Waste Types -->
-                    <label class="block mt-4 font-bold">Types de déchets :</label>
-                    <div *ngFor="let type of wasteTypes">
-                        <div class="inline-flex items-center">
-                            <input type="checkbox" [value]="type.type" (change)="addWasteType(type.type)">
-                            <label class="ml-2">{{ type.type }}</label>
-                        </div>
-                    </div>
-                    <small class="text-gray-500">Vous pouvez cocher plusieurs types de déchets.</small>
-
-                    <!-- Waste Items -->
-                    <div formArrayName="wasteItems" class="space-y-4 mt-4">
-                        <div *ngFor="let wasteItem of wasteItemsArray.controls; let i = index" [formGroupName]="i">
-                            <div class="flex items-center">
-                                <label class="block w-1/2">Poids estimé (g) pour {{ wasteItem.value.type }} :</label>
-                                <input formControlName="weight" type="number" class="w-1/2 p-2 border rounded" min="1000">
-                                <button (click)="removeWasteType(i)" class="ml-2 text-red-500">Supprimer</button>
-                            </div>
-                            <small *ngIf="wasteItem.get('weight')?.invalid && wasteItem.get('weight')?.touched" class="text-red-500">Poids requis, minimum 1000g.</small>
-                        </div>
-                    </div>
-
-                    <!-- Collection Address -->
-                    <label class="block mt-4">Adresse de collecte :</label>
-                    <input type="text" formControlName="collectionAddress" class="w-full p-2 border rounded">
-                    <small *ngIf="collectionForm.get('collectionAddress')?.invalid && collectionForm.get('collectionAddress')?.touched" class="text-red-500">Adresse requise.</small>
-
-                    <!-- Collection Date -->
-                    <label class="block mt-4">Date de collecte :</label>
-                    <input type="date" formControlName="collectionDate" class="w-full p-2 border rounded">
-                    <small *ngIf="collectionForm.get('collectionDate')?.invalid && collectionForm.get('collectionDate')?.touched" class="text-red-500">Date requise.</small>
-
-                    <!-- Collection Time -->
-                    <label class="block mt-4">Créneau horaire :</label>
-                    <select formControlName="collectionTime" class="w-full p-2 border rounded">
-                        <option value="">Sélectionner...</option>
-                        <option value="09:00-12:00">09h00 - 12h00</option>
-                        <option value="12:00-15:00">12h00 - 15h00</option>
-                        <option value="15:00-18:00">15h00 - 18h00</option>
-                    </select>
-
-                    <!-- Notes -->
-                    <label class="block mt-4">Notes supplémentaires (optionnel) :</label>
-                    <textarea formControlName="notes" class="w-full p-2 border rounded"></textarea>
-
-                    <!-- Photos -->
-                    <label class="block mt-4">Photos des déchets (optionnel) :</label>
-                    <input type="file" (change)="onFileChange($event)" class="w-full py-2 rounded text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-
-                    <!-- Submit Button -->
-                    <button [disabled]="collectionForm.invalid" type="submit" class="mt-4 bg-green-600 text-white py-2 px-4 rounded">
-                        Soumettre la demande
-                    </button>
-                </form>
+        <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()">
+          <!-- Waste Types -->
+          <label class="block mt-4 font-bold">Types of Waste:</label>
+          <div *ngFor="let type of wasteTypes">
+            <div class="inline-flex items-center">
+              <input type="checkbox" [value]="type.type" (change)="addWasteType(type.type)">
+              <label class="ml-2">{{ type.type }}</label>
             </div>
-        </div>
+          </div>
+          <small class="text-gray-500">You can select multiple types of waste.</small>
+
+          <!-- Waste Items -->
+          <div formArrayName="wasteItems" class="space-y-4 mt-4">
+            <div *ngFor="let wasteItem of wasteItemsArray.controls; let i = index" [formGroupName]="i">
+              <div class="flex items-center">
+                <label class="block w-1/2">Estimated Weight (g) for {{ wasteItem.value.type }}:</label>
+                <input formControlName="weight" type="number" class="w-1/2 p-2 border rounded" min="1000">
+                <button (click)="removeWasteType(i)" class="ml-2 text-red-500">Remove</button>
+              </div>
+              <small *ngIf="wasteItem.get('weight')?.invalid && wasteItem.get('weight')?.touched" class="text-red-500">Weight required, minimum 1000g.</small>
+            </div>
+          </div>
+
+          <!-- Collection Address -->
+          <label class="block mt-4">Collection Address:</label>
+          <input type="text" formControlName="collectionAddress" class="w-full p-2 border rounded">
+          <small *ngIf="collectionForm.get('collectionAddress')?.invalid && collectionForm.get('collectionAddress')?.touched" class="text-red-500">Address required.</small>
+
+          <!-- Collection Date -->
+          <label class="block mt-4">Collection Date:</label>
+          <input type="date" formControlName="collectionDate" class="w-full p-2 border rounded">
+          <small *ngIf="collectionForm.get('collectionDate')?.invalid && collectionForm.get('collectionDate')?.touched" class="text-red-500">Date required.</small>
+
+          <!-- Collection Time -->
+          <label class="block mt-4">Time Slot:</label>
+          <select formControlName="collectionTime" class="w-full p-2 border rounded">
+            <option value="">Select...</option>
+            <option value="09:00-12:00">09:00 - 12:00</option>
+            <option value="12:00-15:00">12:00 - 15:00</option>
+            <option value="15:00-18:00">15:00 - 18:00</option>
+          </select>
+
+          <!-- Notes -->
+          <label class="block mt-4">Additional Notes (optional):</label>
+          <textarea formControlName="notes" class="w-full p-2 border rounded"></textarea>
+
+          <!-- Photos -->
+          <label class="block mt-4">Photos of the Waste (optional):</label>
+          <input type="file" (change)="onFileChange($event)" class="w-full py-2 rounded text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+
+          <!-- Submit Button -->
+          <button [disabled]="collectionForm.invalid" type="submit" class="mt-4 bg-green-600 text-white py-2 px-4 rounded">
+            Submit Request
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

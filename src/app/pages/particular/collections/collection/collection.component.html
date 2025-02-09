@@ -9,6 +9,7 @@
                 <!-- Button to create a collection request -->
                 <div class="flex justify-end">
                     <button routerLink="create"
+                            [disabled]="disableCreateRequestButton"
                             class="block text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                         Collection Request
                     </button>
