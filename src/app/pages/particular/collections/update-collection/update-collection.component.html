@@ -5,33 +5,39 @@
         <h2 class="text-xl font-bold mb-4">Modifier la Demande de Collecte</h2>
 
         <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()">
-          <!-- Multiple Selection: Checkboxes -->
-          <label class="block mt-4 font-bold">Sélection multiple :</label>
-          <div class="flex space-x-4">
-            <div *ngFor="let type of wasteTypes" class="inline-flex items-center">
-              <input type="checkbox" [value]="type" (change)="onMultipleWasteTypeChange($event)"
-                     [checked]="wasteTypeArray.value.includes(type)">
-              <label class="ml-2">{{ type }}</label>
+          <!-- Waste Types -->
+          <label class="block mt-4 font-bold">Types de déchets :</label>
+          <div *ngFor="let type of wasteTypes">
+            <div class="inline-flex items-center">
+              <input type="checkbox" [value]="type.type" (change)="addWasteType(type.type)">
+              <label class="ml-2">{{ type.type }}</label>
             </div>
           </div>
           <small class="text-gray-500">Vous pouvez cocher plusieurs types de déchets.</small>
 
-          <!-- Poids estimé -->
-          <label class="block mt-4">Poids estimé (g) :</label>
-          <input type="number" formControlName="estimatedWeight" class="w-full p-2 border rounded" min="1000">
-          <small *ngIf="collectionForm.get('estimatedWeight')?.invalid && collectionForm.get('estimatedWeight')?.touched"
-                 class="text-red-500">Min: 1000g</small>
+          <!-- Waste Items -->
+          <div formArrayName="wasteItems" class="space-y-4 mt-4">
+            <div *ngFor="let wasteItem of wasteItemsArray.controls; let i = index" [formGroupName]="i">
+              <div class="flex items-center">
+                <label class="block w-1/2">Poids estimé (g) pour {{ wasteItem.value.type }} :</label>
+                <input formControlName="weight" type="number" class="w-1/2 p-2 border rounded" min="1000">
+                <button (click)="removeWasteType(i)" class="ml-2 text-red-500">Supprimer</button>
+              </div>
+              <small *ngIf="wasteItem.get('weight')?.invalid && wasteItem.get('weight')?.touched" class="text-red-500">Poids requis, minimum 1000g.</small>
+            </div>
+          </div>
 
-          <!-- Adresse -->
+          <!-- Collection Address -->
           <label class="block mt-4">Adresse de collecte :</label>
           <input type="text" formControlName="collectionAddress" class="w-full p-2 border rounded">
-          <small *ngIf="collectionForm.get('collectionAddress')?.invalid && collectionForm.get('collectionAddress')?.touched"
-                 class="text-red-500"> Address is required.</small>
+          <small *ngIf="collectionForm.get('collectionAddress')?.invalid && collectionForm.get('collectionAddress')?.touched" class="text-red-500">Adresse requise.</small>
 
-          <!-- Date de collecte -->
+          <!-- Collection Date -->
           <label class="block mt-4">Date de collecte :</label>
           <input type="date" formControlName="collectionDate" class="w-full p-2 border rounded">
+          <small *ngIf="collectionForm.get('collectionDate')?.invalid && collectionForm.get('collectionDate')?.touched" class="text-red-500">Date requise.</small>
 
+          <!-- Collection Time -->
           <label class="block mt-4">Créneau horaire :</label>
           <select formControlName="collectionTime" class="w-full p-2 border rounded">
             <option value="">Sélectionner...</option>
@@ -44,13 +50,12 @@
           <label class="block mt-4">Notes supplémentaires (optionnel) :</label>
           <textarea formControlName="notes" class="w-full p-2 border rounded"></textarea>
 
-          <!-- Images -->
+          <!-- Photos -->
           <label class="block mt-4">Photos des déchets (optionnel) :</label>
-          <input type="file" (change)="onFileChange($event)" class="w-full py-2 rounded text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 ">
+          <input type="file" (change)="onFileChange($event)" class="w-full py-2 rounded text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
 
           <!-- Submit Button -->
-          <button [disabled]="collectionForm.invalid" type="submit"
-                  class="mt-4 bg-blue-600 text-white py-2 px-4 rounded">
+          <button [disabled]="collectionForm.invalid" type="submit" class="mt-4 bg-green-600 text-white py-2 px-4 rounded">
             Mettre à jour la demande
           </button>
         </form>

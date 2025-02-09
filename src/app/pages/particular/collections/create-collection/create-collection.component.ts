@@ -3,7 +3,7 @@ import { Router, RouterLink } from "@angular/router";
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { CollectionService } from "../../../../core/service/collection.service";
 import { ReactiveFormsModule } from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-create-collection',
@@ -19,36 +19,46 @@ import {NgForOf, NgIf} from "@angular/common";
 })
 export class CreateCollectionComponent {
   collectionForm: FormGroup;
-  wasteTypes: string[] = ["Plastique", "Verre", "Papier", "Métal"];
+  wasteTypes: { type: string, pointsPerKg: number }[] = [
+    { type: "Plastique", pointsPerKg: 2 },
+    { type: "Verre", pointsPerKg: 1 },
+    { type: "Papier", pointsPerKg: 1 },
+    { type: "Métal", pointsPerKg: 5 }
+  ];
 
-  constructor(private formBuilder: FormBuilder, private collectionService: CollectionService, private router: Router) {
+  constructor(
+      private formBuilder: FormBuilder,
+      private collectionService: CollectionService,
+      private router: Router
+  ) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     const particularId = currentUser?.id || null;
+
     this.collectionForm = this.formBuilder.group({
       particularId: [particularId],
-      wasteType: this.formBuilder.array([], Validators.required),
-      photo: [], // Array for multiple images
-      estimatedWeight: [null, [Validators.required, Validators.min(1000)]],
+      wasteItems: this.formBuilder.array([], Validators.required),
       collectionAddress: ['', Validators.required],
       collectionDate: ['', Validators.required],
       collectionTime: ['', Validators.required],
       notes: [''],
-      status:['pending']
+      status: ['pending'],
+      photo:[]
     });
   }
-  get wasteTypeArray() {
-    return this.collectionForm.get('wasteType') as FormArray;
+
+  get wasteItemsArray() {
+    return this.collectionForm.get('wasteItems') as FormArray;
   }
-  onMultipleWasteTypeChange(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.checked) {
-      this.wasteTypeArray.push(this.formBuilder.control(inputElement.value));
-    } else {
-      const index = this.wasteTypeArray.controls.findIndex(control => control.value === inputElement.value);
-      if (index !== -1) {
-        this.wasteTypeArray.removeAt(index);
-      }
-    }
+
+  addWasteType(type: string) {
+    this.wasteItemsArray.push(this.formBuilder.group({
+      type: [type],
+      weight: [null, [Validators.required, Validators.min(1000)]]
+    }));
+  }
+
+  removeWasteType(index: number) {
+    this.wasteItemsArray.removeAt(index);
   }
 
   onFileChange(event: any) {
@@ -61,7 +71,6 @@ export class CreateCollectionComponent {
       reader.readAsDataURL(file);
     }
   }
-
   onSubmit() {
     if (!this.collectionForm.value.particularId) {
       console.log("Utilisateur non identifié.");
@@ -70,13 +79,13 @@ export class CreateCollectionComponent {
 
     if (this.collectionForm.valid) {
       this.collectionService.collectionRequest(this.collectionForm.value).subscribe(
-        data => {
-          console.log("Collection request submitted:", data);
-          this.router.navigate(['/collections']);
-        },
-        error => {
-          console.error('Error adding request:', error);
-        }
+          data => {
+            console.log("Collection request submitted:", data);
+            this.router.navigate(['/dashboard/collections']);
+          },
+          error => {
+            console.error('Error adding request:', error);
+          }
       );
     } else {
       console.log('Formulaire invalide, veuillez vérifier les champs.');

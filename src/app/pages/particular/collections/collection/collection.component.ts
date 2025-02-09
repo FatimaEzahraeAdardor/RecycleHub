@@ -57,8 +57,4 @@ export class CollectionComponent implements OnInit {
       });
     }
   }
-
-  updateCollection(collectionId: string): void {
-    console.log('Update collection with ID:', collectionId);
-  }
 }

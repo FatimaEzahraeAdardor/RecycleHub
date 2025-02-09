@@ -1,0 +1,72 @@
+<div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+    <div class="flex flex-col items-center justify-center h-auto rounded-sm bg-gray-50 dark:bg-gray-800 w-full">
+      <div class="px-4 py-5 sm:px-6 w-full">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white text-center">
+          Collections
+        </h3>
+        <!-- Liste des collectes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div *ngFor="let collection of collections" class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="flex items-center gap-2 px-6 pt-6">
+              <h3 class="text-xl text-gray-800 font-bold flex-1">Collection Request</h3>
+            </div>
+
+            <!-- Image -->
+            <div class="min-h-[200px] flex justify-center">
+              <img [src]="collection.photo ? collection.photo : 'assets/default-image.jpg'"
+                   alt="Collection Illustration"
+                   class="w-full my-6 object-cover rounded-lg" />
+            </div>
+
+            <!-- Collection details -->
+            <div class="px-6 pb-6">
+              <p class="text-sm text-gray-600 leading-relaxed">
+                <strong>Type de déchet :</strong>
+                <span *ngFor="let waste of collection.wasteItems; let last = last">
+  {{ waste.type }} ({{ waste.weight }} g)<span *ngIf="!last">, </span>
+</span>
+
+                <br>
+                <strong>Adresse :</strong> {{ collection.collectionAddress }}<br>
+                <strong>Date et créneau :</strong> {{ collection.collectionDate }} - {{ collection.collectionTime }}<br>
+                <strong>Notes supplémentaires :</strong> {{ collection.notes || 'Aucune' }}<br>
+                <strong>Status :</strong>
+                <span [ngClass]="{
+                  'text-gray-500': collection.status === 'pending',
+                  'text-blue-600': collection.status === 'occupied',
+                  'text-yellow-600': collection.status === 'in-progress',
+                  'text-green-600': collection.status === 'validated',
+                  'text-red-600': collection.status === 'rejected'
+                }">
+                  {{ collection.status | titlecase }}
+                </span>
+              </p>
+            </div>
+
+
+            <!-- accept and Delete Buttons -->
+            <div class="flex justify-end space-x-2 px-6 pb-6 ">
+              <div *ngIf="collection.status=='pending'">
+              <button (click)="acceptCollectionRequest(collection.id)"
+                      class="text-white bg-green-600 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                Accept Request
+              </button>
+              </div>
+              <div *ngIf="collection.status=='occupied'">
+                <button (click)="validateCollection(collection.id)"
+                        class="text-white bg-green-600 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                  Accept Request
+                </button>
+                <button (click)="rejectCollection(collection.id)"
+                        class="text-white bg-red-600 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                  reject Request
+                </button>
+              </div>
+            </div>
+          </div> <!-- Fin de la carte de collecte -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
