@@ -1,0 +1,88 @@
+<div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+    <div class="px-4 py-5 sm:px-6 w-full">
+      <div class="p-8 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Update Collection Request</h2>
+
+        <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <!-- Waste Types -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Types of Waste:</label>
+            <div class="grid grid-cols-2 gap-4">
+              <div *ngFor="let type of wasteTypes" class="flex items-center">
+                <input type="checkbox" [value]="type.type" (change)="addWasteType(type.type)"
+                       class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                <label class="ml-2 text-sm text-gray-700">{{ type.type }}</label>
+              </div>
+            </div>
+            <small class="text-sm text-gray-500 mt-1">You can select multiple types of waste.</small>
+          </div>
+
+          <!-- Waste Items -->
+          <div formArrayName="wasteItems" class="space-y-4">
+            <div *ngFor="let wasteItem of wasteItemsArray.controls; let i = index" [formGroupName]="i" class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center justify-between">
+                <label class="block text-sm font-medium text-gray-700">Estimated Weight (g) for {{ wasteItem.value.type }}:</label>
+                <div class="flex items-center gap-2">
+                  <input formControlName="weight" type="number" class="w-24 p-2 border rounded focus:ring-green-500 focus:border-green-500" min="1000">
+                  <button (click)="removeWasteType(i)" class="text-red-500 hover:text-red-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <small *ngIf="wasteItem.get('weight')?.invalid && wasteItem.get('weight')?.touched" class="text-sm text-red-500">Weight required, minimum 1000g.</small>
+            </div>
+          </div>
+
+          <!-- Collection Address -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Collection Address:</label>
+            <input type="text" formControlName="collectionAddress" class="w-full p-2 border rounded focus:ring-green-500 focus:border-green-500">
+            <small *ngIf="collectionForm.get('collectionAddress')?.invalid && collectionForm.get('collectionAddress')?.touched" class="text-sm text-red-500">Address required.</small>
+          </div>
+
+          <!-- Collection Date -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Collection Date:</label>
+            <input type="date" formControlName="collectionDate" [min]="getTodayDate()" class="w-full p-2 border rounded focus:ring-green-500 focus:border-green-500">
+            <small *ngIf="collectionForm.get('collectionDate')?.invalid && collectionForm.get('collectionDate')?.touched" class="text-sm text-red-500">Date required.</small>
+          </div>
+
+          <!-- Collection Time -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Time Slot:</label>
+            <select formControlName="collectionTime" class="w-full p-2 border rounded focus:ring-green-500 focus:border-green-500">
+              <option value="">Select...</option>
+              <option value="09:00-12:00">09:00 - 12:00</option>
+              <option value="12:00-15:00">12:00 - 15:00</option>
+              <option value="15:00-18:00">15:00 - 18:00</option>
+            </select>
+          </div>
+
+          <!-- Notes -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Additional Notes (optional):</label>
+            <textarea formControlName="notes" class="w-full p-2 border rounded focus:ring-green-500 focus:border-green-500"></textarea>
+          </div>
+
+          <!-- Photos -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Photos of the Waste (optional):</label>
+            <input type="file" (change)="onFileChange($event)"
+                   class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mt-6">
+            <button [disabled]="collectionForm.invalid" type="submit"
+                    class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+              Update Request
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
