@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
-import { CollectionService } from "../../../../core/service/collection.service";
-import { Collection } from "../../../../model/collection";
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Collection } from "../../../../model/collection";
+import {CollectionService} from "../../../../core/service/collection.service";
+import {selectCollections, selectError, selectLoading} from "../../../../store/collections/collection.selector";
+import {loadCollections} from "../../../../store/collections/collection.action";
 
 @Component({
-  selector: 'app-collection',
+  selector: 'app-collections',
   standalone: true,
   imports: [
     RouterLink,
@@ -15,40 +19,38 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./collection.component.css']
 })
 export class CollectionComponent implements OnInit {
-  collections: Collection[] = [];
+  collections$: Observable<Collection[]>;
+  loading$: Observable<boolean>;
+  error$: Observable<string | null>;
   particularId: string | null = null;
   disableCreateRequestButton: boolean = false;
 
-  constructor(private collectionService: CollectionService) {
+  constructor(private store: Store, private collectionService: CollectionService) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.particularId = currentUser?.id || null;
+
+    // Use selectors to get state
+    this.collections$ = this.store.select(selectCollections);
+    this.loading$ = this.store.select(selectLoading);
+    this.error$ = this.store.select(selectError);
   }
 
   ngOnInit(): void {
     if (this.particularId) {
-      this.getCollections();
+      this.store.dispatch(loadCollections({ particularId: this.particularId }));
     } else {
       console.warn('No particular ID found.');
     }
+
+    // Check pending requests whenever collections change
+    this.collections$.subscribe(collections => this.checkPendingRequests(collections));
   }
 
-  getCollections() {
-    this.collectionService.getCollectionsByParticular(this.particularId!).subscribe({
-      next: (data) => {
-        this.collections = data;
-        this.checkPendingRequests();
-      },
-      error: (err) => console.error('Error while fetching collections:', err)
-    });
-  }
-
-  checkPendingRequests() {
-    // Filter collections that are neither validated nor rejected
-    const notValidatedOrRejectedCount = this.collections.filter(collection =>
+  checkPendingRequests(collections: Collection[]) {
+    const notValidatedOrRejectedCount = collections.filter(collection =>
       collection.status !== 'validated' && collection.status !== 'rejected'
     ).length;
 
-    // Disable the button if there are already 3 or more such requests
     if (notValidatedOrRejectedCount >= 3) {
       this.disableCreateRequestButton = true;
     } else {
@@ -66,7 +68,7 @@ export class CollectionComponent implements OnInit {
     if (confirmDelete) {
       this.collectionService.deleteCollection(collectionId).subscribe({
         next: (response) => {
-          this.collections = this.collections.filter(collection => collection.id !== collectionId);
+          this.store.dispatch(loadCollections({ particularId: this.particularId! }));
           console.log('Collection deleted successfully:', response);
         },
         error: (error) => {
