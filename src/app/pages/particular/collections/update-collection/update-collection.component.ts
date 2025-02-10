@@ -5,7 +5,7 @@ import { CollectionService } from '../../../../core/service/collection.service';
 import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-update-collection',
+  selector: 'app-update-collections',
   templateUrl: './update-collection.component.html',
   standalone: true,
   imports: [
@@ -82,7 +82,7 @@ export class UpdateCollectionComponent implements OnInit {
         });
       },
       (error) => {
-        console.error("Error loading collection details:", error);
+        console.error("Error loading collections details:", error);
       }
     );
   }
@@ -117,7 +117,7 @@ export class UpdateCollectionComponent implements OnInit {
           this.router.navigate(['/dashboard/collections']);
         },
         (error) => {
-          console.error("Error updating the collection request:", error);
+          console.error("Error updating the collections request:", error);
         }
       );
     } else {

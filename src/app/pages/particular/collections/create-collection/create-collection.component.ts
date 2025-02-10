@@ -5,7 +5,7 @@ import { CollectionService } from "../../../../core/service/collection.service";
 import { NgForOf, NgIf } from "@angular/common";
 
 @Component({
-  selector: 'app-create-collection',
+  selector: 'app-create-collections',
   standalone: true,
   imports: [
     ReactiveFormsModule,

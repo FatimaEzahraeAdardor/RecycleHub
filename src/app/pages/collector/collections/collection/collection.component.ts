@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import {UserService} from "../../../../core/service/user.service";
 
 @Component({
-  selector: 'app-collection',
+  selector: 'app-collections',
   standalone: true,
   imports: [
     CommonModule
@@ -48,8 +48,8 @@ export class CollectionComponent implements OnInit {
         this.router.navigate(['/dashboardCollector/collections'])
       },
       error: (err) => {
-        console.error('Error updating collection status:', err);
-        alert('Failed to accept the collection request.');
+        console.error('Error updating collections status:', err);
+        alert('Failed to accept the collections request.');
       }
     });
   }
@@ -76,15 +76,15 @@ export class CollectionComponent implements OnInit {
             }
           },
           error: (err) => {
-            console.error('Error fetching collection:', err);
-            alert('Failed to retrieve collection details.');
+            console.error('Error fetching collections:', err);
+            alert('Failed to retrieve collections details.');
           }
         });
 
       },
       error: (err) => {
-        console.error('Error updating collection status:', err);
-        alert('Failed to validate the collection request.');
+        console.error('Error updating collections status:', err);
+        alert('Failed to validate the collections request.');
       }
     });
   }
@@ -97,8 +97,8 @@ export class CollectionComponent implements OnInit {
         this.router.navigate(['/dashboardCollector/collections'])
       },
       error: (err) => {
-        console.error('Error updating collection status:', err);
-        alert('Failed to rejected the collection request.');
+        console.error('Error updating collections status:', err);
+        alert('Failed to rejected the collections request.');
       }
     });
   }

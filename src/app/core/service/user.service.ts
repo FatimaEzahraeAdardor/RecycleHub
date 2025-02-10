@@ -66,7 +66,7 @@ export class UserService {
     }, 0);
   }
   /**
-   * Updates the user's points after validating a collection.
+   * Updates the user's points after validating a collections.
    */
   updateUserPoints(particularId: string, pointsToAdd: number): Observable<User> {
     return this.getUserById(particularId).pipe(
